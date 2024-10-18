@@ -1,0 +1,39 @@
+// 7-12. 다음 중 접근 제어자에 대한 설명으로 옳지 않은 것은? c
+c.  지역변수에도 접근 제어자를 사용할 수 있다.
+-> 지역변수에는 접근 제어자 사용 불가하다. (인스턴스 변수는 가능)
+
+// 7-13. Math 클래스의 생성자는 접근 제어자가 private이다. 그 이유는 무엇인가?
+외부에서 Math 클래스의 인스턴스를 생성하지 못하게 제한하기 위해서
+
+// 7-14.
+final int num;
+final boolean isKwang;
+
+// 7-15. 클래스가 다음과 같이 정의되어 있을 때, 형 변환을 올바르게 하지 않은 것은? b,e
+
+class Unit{}
+class AirUnit extends Unit{}
+class GroundUnit extends Unit{}
+class Tank extends GroundUnit{}
+class AirCraft extends AirUnit{}
+
+a. u = (Unit)ac;
+b. u = ac;
+c. GroundUnit gu = (GroundUnit)u;
+d. AirUnit au = ac;
+e. t = (Tank)u;
+f. GroundUnit gu = t;
+
+// 7-16. 다음 중 연산결과가 true가 아닌 것은?
+class Car{}
+class FireEngine extends Car implements Movable{}
+class Ambulance extends Car{}
+
+FireEngine fe = new FireEngine();
+
+a. fe instanceof FireEngine
+b. fe instanceof Movable
+c. fe instanceof Object
+d. fe instanceof Car
+e. fe instanceof Ambulance
+
