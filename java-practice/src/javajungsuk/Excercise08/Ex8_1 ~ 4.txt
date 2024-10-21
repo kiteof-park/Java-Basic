@@ -1,0 +1,64 @@
+// 📌 8-1. 예외 처리의 정의와 목적
+정의: Exception Handling, 프로그램 실행 중 발생할 수 있는 오류에 대해 미리 대비하는 코드를 작성하는 것
+목적: 프로그램의 비정상적인 종료를 막고, 정상 실행 상태를 유지
+
+// 📌 8-2. 다음은 실행 도준 예외가 발생하여 화면에 출력된 내용이다. 옳지 않은 것은? d
+java.lang.ArithmeticException : / by zero
+    at ExceptionEx18.method2 (ExceptonEx8.java:12)
+    at ExceptionEx18.method1 (ExceptonEx8.java:8)
+    at ExceptionEx18.main (ExceptonEx8.java:4)
+
+a. 위의 내용으로 예외가 발생했을 당시 호출 스택에 존재했던 메서드를 알 수 있다.
+b. 예외가 발생한 위치는 method2메서드이며, ExceptionEx18.java 파일의 12번째 줄이다.
+c. 발생한 예외는 ArithmeticException이며, 0으로 나누어서 예외가 발생했다.
+✅d. method2메서드가 method1메서드를 호출하였고, 그 위치는 ExceptionEx18.java파일의 8번째 줄이다.
+-> method1메서드가 method2메서드를 호출하였다.
+-> 'ExceptionEx18.java파일의 8번째 줄'은 method1()이 method2()를 호출하면서 예외가 발생한 위치다.
+
+// 📌 8-3. 다음중 오버라이딩이 잘못된 것은? d, e
+void add(int a, int b) throws InvalidNumberException, NotANumberException {}
+
+class NumberException extends Exception {}
+class InvalidNumberException extends NumberException {}
+class NotANumberException extends NumberException {}
+---------------------------------------------
+            Exception
+                ↑
+        NumberException
+    ↑                      ↑
+InvalidNumberException   NotANumberException
+---------------------------------------------
+💡 오버라이딩 된 add()메서드는 NumberException, Exception을 선언할 수 없다.
+💡 오버라이딩 조건 중 조상 메서드보다 더 많은 예외를 선언할 수 없다는 것은 예외의 개수뿐만 아니라 '범위'도 포함
+(근데 그게 그거임. 범위가 넓으면 개수도 많아짐)
+
+a. void add(int a, int b) throws InvalidException, NotANumberException{}
+b. void add(int a, int b) throws InvalidException
+c. void add(int a, int b) throws NotANumberException{}
+✅d. void add(int a, int b) throws Exception{}
+✅e. void add(int a, int b) throws NumberException{}
+
+// 📌 8-4. 다음과 같은 메서드가 있을 때, 예외를 잘못 처리한 것은? c
+void method() throws InvalidNumberException, NotANumberException {}
+
+class NumberException extends RuntimeException {}
+class InvaildNumberException extends NumberException {}
+class NotANumberException extends NumberException {}
+---------------------------------------------
+                RuntimeException
+                        ↑
+                NumberException
+                ↑               ↑
+    InvalildNumberException     NotANumberException
+---------------------------------------------
+a. try{ method(); } catch(Exception e) {}
+b. try{ method(); } catch(NumberException e) {} catch(Exception e) {}
+✅c. try{ method(); } catch(Exception e) {} catch(NumberException e) {}
+-> 첫 번째 catch{}에서 Exception을 선언하면, 두 번째 catch{}는 도달할 수 없는 코드가 된다.
+-> 💡 Exception은 모든 예외의 최고 조상, 따라서 Exception을 처리하는 catch{}는 제일 마지막에 있어야 한다.
+-> 💡 Exception을 선언한 catch{}가 마지막 catch{}가 아닐 경우 컴파일 에러가 발생한다.
+d. try{ method(); } catch(InvalidNumberException e) {} catch(NotANumberException e) {}
+-> 👀 method()에서 발생할 수 있는 예외는 InvalidNumberException 또는 NotANumberException 이므로 잘못처리한 건 아닐듯. ... ?
+-> 💡 메서드에 두 가지 예외가 선언되어 있을 때, 각각의 예외를 별도의 catch블럭으로 처리하는 것은 올바른 방법
+e. try{ method(); } catch(NumberException e) {}
+f. try{ method(); } catch(RuntimeException e) {}
